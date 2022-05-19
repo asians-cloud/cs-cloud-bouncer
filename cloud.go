@@ -3,12 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"os/exec"
         "os"
 	"strconv"
 	"time"
         "bytes"
-        "strings"
         "net/http"
 
 	log "github.com/sirupsen/logrus"
@@ -92,7 +90,7 @@ func (c *cloudBouncer) Init() error {
 	return nil
 }
 
-func (c *cloudBouncer) Add(decision *models.Decision) error {
+func (c *cloudBouncer) Add(decision *models.Decision, config bouncerConfig) error {
 	if _, exists := c.newDecisionValueSet[decisionToDecisionKey(decision)]; exists {
 		return nil
 	}
@@ -101,12 +99,12 @@ func (c *cloudBouncer) Add(decision *models.Decision) error {
 		return err
 	}
 	log.Debugf("cloud : add ban on %s for %s sec (%s)", *decision.Value, strconv.Itoa(int(banDuration.Seconds())), *decision.Scenario)
-        c.AddCloud(*decision.Value)
+        c.AddCloud(*decision.Value, config)
 	c.newDecisionValueSet[decisionToDecisionKey(decision)] = struct{}{}
 	return nil
 }
 
-func (c *cloudBouncer) Delete(decision *models.Decision) error {
+func (c *cloudBouncer) Delete(decision *models.Decision, config bouncerConfig) error {
 	if _, exists := c.expiredDecisionValueSet[decisionToDecisionKey(decision)]; exists {
 		return nil
 	}
@@ -115,7 +113,7 @@ func (c *cloudBouncer) Delete(decision *models.Decision) error {
 		return err
 	}
 	log.Debugf("cloud : del ban on %s for %s sec (%s)", *decision.Value, strconv.Itoa(int(banDuration.Seconds())), *decision.Scenario)
-        c.DeleteCloud(*decision.Value)
+        c.DeleteCloud(*decision.Value, config)
 	c.expiredDecisionValueSet[decisionToDecisionKey(decision)] = struct{}{}
 	return nil
 }

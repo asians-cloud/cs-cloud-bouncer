@@ -116,7 +116,7 @@ func main() {
 			case decisions := <-bouncer.Stream:
 				log.Infof("deleting '%d' decisions", len(decisions.Deleted))
 				for _, decision := range decisions.Deleted {
-					if err := cloud.Delete(decision); err != nil {
+					if err := cloud.Delete(decision, *config); err != nil {
 						log.Errorf("unable to delete decision for '%s': %s", *decision.Value, err)
 					} else {
 						log.Debugf("deleted '%s'", *decision.Value)
@@ -125,7 +125,7 @@ func main() {
 				}
 				log.Infof("adding '%d' decisions", len(decisions.New))
 				for _, decision := range decisions.New {
-					if err := cloud.Add(decision); err != nil {
+					if err := cloud.Add(decision, *config); err != nil {
 						log.Errorf("unable to insert decision for '%s': %s", *decision.Value, err)
 					} else {
 						log.Debugf("Adding '%s' for '%s'", *decision.Value, *decision.Duration)
