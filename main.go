@@ -19,6 +19,7 @@ import (
 
 const (
 	name = "crowdsec-cloud-bouncer"
+        scope = "cloud"
 )
 
 var t tomb.Tomb
@@ -116,20 +117,24 @@ func main() {
 			case decisions := <-bouncer.Stream:
 				log.Infof("deleting '%d' decisions", len(decisions.Deleted))
 				for _, decision := range decisions.Deleted {
-					if err := cloud.Delete(decision, *config); err != nil {
-						log.Errorf("unable to delete decision for '%s': %s", *decision.Value, err)
-					} else {
-						log.Debugf("deleted '%s'", *decision.Value)
-					}
+                                        if *decision.Scope == scope {
+                                              if err := cloud.Delete(decision, *config); err != nil {
+                                                      log.Errorf("unable to delete decision for '%s': %s", *decision.Value, err)
+                                              } else {
+                                                      log.Debugf("deleted '%s'", *decision.Value)
+                                              }
+                                        }
 
 				}
 				log.Infof("adding '%d' decisions", len(decisions.New))
 				for _, decision := range decisions.New {
-					if err := cloud.Add(decision, *config); err != nil {
-						log.Errorf("unable to insert decision for '%s': %s", *decision.Value, err)
-					} else {
-						log.Debugf("Adding '%s' for '%s'", *decision.Value, *decision.Duration)
-					}
+                                        if *decision.Scope == scope {
+                                              if err := cloud.Add(decision, *config); err != nil {
+                                                      log.Errorf("unable to insert decision for '%s': %s", *decision.Value, err)
+                                              } else {
+                                                      log.Debugf("Adding '%s' for '%s'", *decision.Value, *decision.Duration)
+                                              }
+                                        }
 				}
 			case <-cacheResetTicker.C:
 				cloud.ResetCache()
