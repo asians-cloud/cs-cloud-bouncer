@@ -5,8 +5,6 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
-
-	"github.com/crowdsecurity/crowdsec/pkg/models"
 )
 
 const (
