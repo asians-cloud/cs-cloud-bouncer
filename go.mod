@@ -1,4 +1,4 @@
-module github.com/crowdsecurity/crowdsec-custom-bouncer
+module github.com/asians-cloud/cs-cloud-bouncer
 
 go 1.14
 
