@@ -45,8 +45,7 @@ func (c *cloudBouncer) AddCloud(IP string, config bouncerConfig) {
         }
         defer resp.Body.Close()
         
-        log.Infof("Status: %s", resp.Status)
-        if resp.Status == "200" {
+        if resp.Status == "200 OK" {
             log.Info(fmt.Sprint("Success to ban IP : ", IP))
         } else {
             log.Error(fmt.Sprint("Fail to ban IP : ", IP))
@@ -69,7 +68,7 @@ func (c *cloudBouncer) DeleteCloud(IP string, config bouncerConfig) {
         }
         defer resp.Body.Close()
         
-        if resp.Status == "200" {
+        if resp.Status == "200 OK" {
             log.Info(fmt.Sprint("Success to ban IP : ", IP))
         } else {
             log.Error(fmt.Sprint("Fail to unban IP : ", IP))
