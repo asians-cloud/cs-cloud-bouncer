@@ -94,15 +94,15 @@ func main() {
 	if err := cloud.Init(); err != nil {
 		log.Fatalf(err.Error())
 	}
-
+        
 	bouncer := &csbouncer.StreamBouncer{
 		APIKey:         config.APIKey,
 		APIUrl:         config.APIUrl,
 		TickerInterval: config.UpdateFrequency,
 		UserAgent:      fmt.Sprintf("%s/%s", name, version.VersionStr()),
                 Opts: apiclient.DecisionsStreamOpts{
-                        Scopes:                 "cloud",
-                },
+			Scopes: "cloud",
+		},
 	}
 	if err := bouncer.Init(); err != nil {
 		log.Fatalf(err.Error())
