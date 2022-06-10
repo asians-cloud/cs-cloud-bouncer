@@ -14,6 +14,7 @@ import (
 
 	"github.com/asians-cloud/cs-cloud-bouncer/pkg/version"
 	csbouncer "github.com/crowdsecurity/go-cs-bouncer"
+        "github.com/crowdsecurity/crowdsec/pkg/apiclient"
 	"gopkg.in/tomb.v2"
 )
 
@@ -99,6 +100,9 @@ func main() {
 		APIUrl:         config.APIUrl,
 		TickerInterval: config.UpdateFrequency,
 		UserAgent:      fmt.Sprintf("%s/%s", name, version.VersionStr()),
+                Opts: apiclient.DecisionsStreamOpts{
+                        Scopes:                 "cloud",
+                },
 	}
 	if err := bouncer.Init(); err != nil {
 		log.Fatalf(err.Error())
