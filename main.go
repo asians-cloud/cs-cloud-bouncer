@@ -101,7 +101,7 @@ func main() {
 		TickerInterval: config.UpdateFrequency,
 		UserAgent:      fmt.Sprintf("%s/%s", name, version.VersionStr()),
                 Opts: apiclient.DecisionsStreamOpts{
-			Scopes: "cloud",
+			Scopes: scope,
 		},
 	}
 	if err := bouncer.Init(); err != nil {
@@ -132,7 +132,6 @@ func main() {
 				}
 				log.Infof("adding '%d' decisions", len(decisions.New))
 				for _, decision := range decisions.New {
-                                        log.Infof("Scope: %s, scope constant: %s", *decision.Scope, scope)
                                         if *decision.Scope == scope {
                                               if err := cloud.Add(decision, *config); err != nil {
                                                       log.Errorf("unable to insert decision for '%s': %s", *decision.Value, err)
