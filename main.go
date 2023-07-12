@@ -13,8 +13,8 @@ import (
 	"github.com/sirupsen/logrus/hooks/writer"
 
 	"github.com/asians-cloud/cs-cloud-bouncer/pkg/version"
-        "github.com/crowdsecurity/crowdsec/pkg/apiclient"
-	csbouncer "github.com/crowdsecurity/go-cs-bouncer" 
+        "github.com/asians-cloud/crowdsec/pkg/apiclient"
+	csbouncer "github.com/asians-cloud/go-cs-bouncer" 
 	"gopkg.in/tomb.v2"
 )
 
@@ -109,7 +109,7 @@ func main() {
 	}
 	cacheResetTicker := time.NewTicker(config.CacheRetentionDuration)
 
-	go bouncer.Run()
+	go bouncer.RunStream()
 
 	t.Go(func() error {
 		log.Printf("Processing new and deleted decisions . . .")
