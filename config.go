@@ -48,7 +48,7 @@ func NewConfig(configPath string) (*bouncerConfig, error) {
 
 	/*Configure logging*/
         compress := true
-	if err = types.SetDefaultLoggerConfig(config.LogMode, config.LogDir, config.LogLevel, 500, 3, 28, &compress); err != nil {
+	if err = types.SetDefaultLoggerConfig(config.LogMode, config.LogDir, config.LogLevel, int(500), int(3), int(28), &compress, false); err != nil {
 		log.Fatal(err.Error())
 	}
 	if config.LogMode == "file" {

@@ -7,10 +7,12 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+        "context"
 
 	"github.com/coreos/go-systemd/daemon"
 	log "github.com/sirupsen/logrus"
 	"github.com/sirupsen/logrus/hooks/writer"
+        "golang.org/x/sync/errgroup"
 
 	"github.com/asians-cloud/cs-cloud-bouncer/pkg/version"
         "github.com/asians-cloud/crowdsec/pkg/apiclient"
@@ -109,7 +111,12 @@ func main() {
 	}
 	cacheResetTicker := time.NewTicker(config.CacheRetentionDuration)
 
-	go bouncer.RunStream()
+	g, ctx := errgroup.WithContext(context.Background())
+
+	g.Go(func() error {
+		bouncer.RunStream(ctx)
+		return fmt.Errorf("stream api init failed")
+	})
 
 	t.Go(func() error {
 		log.Printf("Processing new and deleted decisions . . .")
