@@ -3,8 +3,8 @@ module github.com/asians-cloud/cs-cloud-bouncer
 go 1.14
 
 require (
-	github.com/asians-cloud/crowdsec v1.5.3
-	github.com/asians-cloud/go-cs-bouncer v0.0.9
+	github.com/asians-cloud/crowdsec v1.5.4
+	github.com/asians-cloud/go-cs-bouncer v0.0.10
 	github.com/coreos/go-systemd v0.0.0-20191104093116-d3cd4ed1dbcf
 	github.com/sirupsen/logrus v1.9.2
 	golang.org/x/sync v0.2.0
